@@ -18,7 +18,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get("/", function (req, res) {
-  res.render("home", { homeStartingContent: homeStartingContent });
+  res.render("home", { homeStartingContent: homeStartingContent, posts: posts });
+  // console.log(posts);
 });
 
 app.get("/contact", function (req, res) {
@@ -39,7 +40,7 @@ app.post("/compose", function (req, res) {
     body: req.body.postBody,
   };
   posts.push(post);
-  console.log(posts);
+  
   res.redirect("/");
 });
 
