@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const _ = require("lodash");
 
 const homeStartingContent =
   "HOME HOME Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
@@ -14,9 +15,11 @@ let posts = [];
 
 app.set("view engine", "ejs");
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 app.use(express.static("public"));
 
 app.get("/", function (req, res) {
@@ -29,13 +32,13 @@ app.get("/", function (req, res) {
 
 app.get("/contact", function (req, res) {
   res.render("contact", {
-    contactPageContent: contactContent
+    contactPageContent: contactContent,
   });
 });
 
 app.get("/about", function (req, res) {
   res.render("about", {
-    aboutPageContent: aboutContent
+    aboutPageContent: aboutContent,
   });
 });
 
@@ -54,16 +57,18 @@ app.post("/compose", function (req, res) {
 });
 
 app.get("/posts/:topic", function (req, res) {
-  console.log(req.params.topic);
+  var requestedTopics = _.lowerCase(req.params.topic);
+  console.log(requestedTopics);
   var i = 0;
   posts.forEach(function (post) {
-    if (post.title === req.params.topic) {
+    const storedTitle = _.lowerCase(post.title);
+    if (storedTitle === requestedTopics) {
       i++;
     }
   });
-  if(i==1){
+  if (i == 1) {
     console.log("Match found!");
-  }else{
+  } else {
     console.log("Match not found!");
   }
 });
