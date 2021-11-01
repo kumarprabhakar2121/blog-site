@@ -63,14 +63,11 @@ app.get("/posts/:topic", function (req, res) {
   posts.forEach(function (post) {
     const storedTitle = _.lowerCase(post.title);
     if (storedTitle === requestedTopics) {
-      i++;
+      res.render("post",{postTitle: storedTitle, postBody: post.body });
+    } else {
+      console.log("Match not found!");
     }
   });
-  if (i == 1) {
-    console.log("Match found!");
-  } else {
-    console.log("Match not found!");
-  }
 });
 app.listen(3000, function () {
   console.log("Server started on localhost port 3000");
