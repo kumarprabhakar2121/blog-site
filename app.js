@@ -14,20 +14,29 @@ let posts = [];
 
 app.set("view engine", "ejs");
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(express.static("public"));
 
 app.get("/", function (req, res) {
-  res.render("home", { homeStartingContent: homeStartingContent, posts: posts });
+  res.render("home", {
+    homeStartingContent: homeStartingContent,
+    posts: posts,
+  });
   // console.log(posts);
 });
 
 app.get("/contact", function (req, res) {
-  res.render("contact", { contactPageContent: contactContent });
+  res.render("contact", {
+    contactPageContent: contactContent
+  });
 });
 
 app.get("/about", function (req, res) {
-  res.render("about", { aboutPageContent: aboutContent });
+  res.render("about", {
+    aboutPageContent: aboutContent
+  });
 });
 
 app.get("/compose", function (req, res) {
@@ -40,10 +49,24 @@ app.post("/compose", function (req, res) {
     body: req.body.postBody,
   };
   posts.push(post);
-  
+
   res.redirect("/");
 });
 
+app.get("/posts/:topic", function (req, res) {
+  console.log(req.params.topic);
+  var i = 0;
+  posts.forEach(function (post) {
+    if (post.title === req.params.topic) {
+      i++;
+    }
+  });
+  if(i==1){
+    console.log("Match found!");
+  }else{
+    console.log("Match not found!");
+  }
+});
 app.listen(3000, function () {
   console.log("Server started on localhost port 3000");
 });
